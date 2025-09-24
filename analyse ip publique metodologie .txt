@@ -1,0 +1,95 @@
+🛠️ Méthodologie pour analyser une IP publique trouvée sur ton réseau
+1. Vérifier si c’est bien une IP publique
+
+Vérifie que l’adresse ne fait pas partie des plages privées (RFC1918) :
+
+10.0.0.0 – 10.255.255.255
+
+172.16.0.0 – 172.31.255.255
+
+192.168.0.0 – 192.168.255.255
+
+Si elle est en dehors de ça → c’est bien une IP publique.
+
+Commande utile :
+
+whois <IP>
+
+
+👉 Ça te donne le fournisseur d’accès (FAI), l’organisation, et parfois le pays.
+
+2. Tester la connectivité réseau
+
+Ping (ICMP) comme tu as déjà fait.
+
+Si pas de réponse, c’est normal, on continue.
+
+Traceroute pour voir le chemin :
+
+traceroute <IP>
+
+
+👉 Ça te montre si le trafic sort bien de ton réseau et où ça s’arrête.
+
+3. Scanner les services ouverts
+
+Utilise Nmap :
+
+nmap -Pn -p- <IP>
+
+
+-Pn = ne pas faire de ping, considère la machine comme up.
+
+-p- = scan tous les ports (0-65535).
+
+👉 Si des ports sont ouverts, tu sais que la machine ou la box répond à quelque chose (web, ssh, vpn, etc.).
+
+⚠️ Attention : sur Internet, scanner une IP inconnue peut être considéré comme intrusif. À faire uniquement dans ton périmètre autorisé.
+
+4. Différencier Box NAT vs Machine accessible directement
+
+Si l’IP est celle d’une box/FAI, souvent seuls quelques ports seront ouverts (80, 443, 22, 3389, etc. selon services exposés).
+
+Si c’est une machine directement exposée (ex: un serveur), tu verras des services spécifiques (Apache, MySQL, etc.).
+
+👉 Astuce :
+Avec nmap -sV <IP> tu obtiens les versions des services.
+
+5. Faire une reconnaissance passive
+
+Au lieu de taper directement dessus, utilise des services externes :
+
+Shodan.io
+ : moteur de recherche des IP publiques et services exposés.
+
+Censys.io
+ : même principe, très utile.
+
+VirusTotal IP search
+ : voir si l’IP est connue.
+
+👉 Ça te permet de savoir ce qui est exposé sans générer du bruit réseau.
+
+6. Vérifier si la machine interne correspond vraiment à cette IP
+
+Si tu penses que c’est une machine interne à ton réseau mais avec une IP publique :
+
+Connecte-toi au routeur/box pour voir quelle machine a cette IP en NAT.
+
+Ou regarde avec un scan ARP sur ton réseau local (ex : arp-scan --localnet) pour trouver l’IP privée correspondante.
+
+Tu verras rapidement si c’est juste la box ou une machine exposée.
+
+✅ En résumé :
+
+Vérifie si c’est bien une IP publique (whois).
+
+Teste la connectivité (ping/traceroute).
+
+Fais un scan contrôlé (nmap).
+
+Compare résultats → box NAT ou serveur direct.
+
+Regarde Shodan/Censys pour compléter.
+
+Analyse côté interne (ARP, routeur) si c’est dans ton réseau.
