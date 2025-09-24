@@ -12,7 +12,7 @@ Ce script permet d'analyser une IP publique dans un réseau de manière sécuris
   * `nmap`
   * `curl`
   * `jq` (optionnel, pour afficher proprement les JSON Shodan/VirusTotal)
-* (Optionnel) Clés API pour Shodan et VirusTotal : (le propose automatiquement pendant le script)
+* (Optionnel) Clés API pour Shodan et VirusTotal : 
 
   * `SHODAN_API_KEY`
   * `VT_API_KEY`
@@ -32,7 +32,7 @@ mv analyse_ip_public.sh ~/scripts/
 chmod +x ~/scripts/analyse_ip_public.sh
 ```
 
-3. (Optionnel) Exportez vos clés API si vous souhaitez activer Shodan et VirusTotal :
+3. (Optionnel) Exportez vos clés API si vous souhaitez activer Shodan et VirusTotal :(le propose automatiquement pendant l'execution du sript)
 
 ```bash
 export SHODAN_API_KEY="votre_cle_shodan"
